@@ -1,13 +1,15 @@
-from chessdotcom import get_leaderboards, get_player_stats, get_player_game_archives
+from chessdotcom import get_player_game_archives
 import requests
+import json
 
-def get_most_recent_game(username):
-	data = get_player_game_archives(username).json
-	url = data['archives'][-1]
-	games = requests.get(url).json()
-	game = games['games'][-1]
-	print(game['pgn'])
+def get_all_games_pgn(username):
+    data = get_player_game_archives(username).json
+    url = data['archives']
+    for i in range(len(url)):
+        games = requests.get(url[i]).json()
+        for j in range(len(games['games'])):
+            print(games['games'][j]['pgn'])
 
 
 
-get_most_recent_game('ilvolpe')
+get_all_games_pgn('ilvolpe')
